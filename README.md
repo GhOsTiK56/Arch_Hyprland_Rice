@@ -76,3 +76,34 @@ rm -rf ~/.config/hypr
 stow -D hypr -t ~
 stow hypr -t ~
 ```
+## Списки установленных пакетов
+
+В папке `packages/` хранятся актуальные списки всех установленных программ.
+
+```bash
+packages/
+├── explicitly-installed.txt    # pacman -Qqe → явно установленные из официальных репозиториев
+└── aur.txt                     # yay -Qqm     → пакеты из AUR
+```
+
+Обновление списков
+После установки или удаления пакетов:
+
+```bash
+cd ~/arch-hyprland-rice/packages
+pacman -Qqe | sort > explicitly-installed.txt
+yay -Qqm   | sort > aur.txt
+git add .
+git commit -m "Обновлены списки пакетов"
+```
+
+Восстановление системы на чистой Arch
+
+```bash
+# 1. Установить официальные пакеты
+sudo pacman -S --needed $(cat ~/arch-hyprland-rice/packages/explicitly-installed.txt)
+
+# 2. Установить AUR-пакеты (сначала yay должен быть установлен)
+yay -S --needed $(cat ~/arch-hyprland-rice/packages/aur.txt)
+```
+

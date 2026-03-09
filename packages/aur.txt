@@ -1,0 +1,6 @@
+android-studio
+audiorelay
+qt6ct-kde
+visual-studio-code-bin
+yay
+zen-browser-bin
