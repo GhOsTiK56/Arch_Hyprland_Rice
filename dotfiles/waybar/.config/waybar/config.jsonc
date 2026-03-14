@@ -60,7 +60,7 @@
     "modules": ["pulseaudio#output", "pulseaudio#input"]
   },
   "pulseaudio#output": {
-    "format": "<span color=\"#DCA561\">{icon}</span>  {volume}%",
+    "format": "<span color=\"#DCA561\"></span>  {volume}%",
     "format-muted": " ",
     "format-icons": {
       "headphone": "",
