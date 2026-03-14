@@ -1,5 +1,11 @@
 
 {
+  // Auto hide waybar
+  "start_hidden": true,
+  "ipc": true,
+  "on-sigusr1": "hide",
+  "on-sigusr2": "show",
+  // Auto hide waybar
   "position": "top",
   "output": "HDMI-A-2",
   "margin-left": 0,
