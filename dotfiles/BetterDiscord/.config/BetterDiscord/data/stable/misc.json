@@ -1,0 +1,14 @@
+{
+    "version": "1.13.10",
+    "addonlistControls": {
+        "plugin-store": {
+            "sort": "downloads"
+        },
+        "plugin": {
+            "view": "grid"
+        },
+        "theme-store": {
+            "ascending": true
+        }
+    }
+}
