@@ -2,7 +2,7 @@
 
 * {
   font-family:
-    "JetBrainsMono Nerd Font", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    "JetBrainsMono Nerd Font Propo", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
   font-size: 1.01em;
 }
 
@@ -184,6 +184,17 @@ button:hover {
   color: @foreground;
   padding: 6px 10px;
   border-radius: 10px;
+}
+#custom-notifications {  
+  font-weight: 700;
+  background-color: @background;
+  color: @foreground;
+  padding: 6px 14px;
+  border-radius: 10px;
+}
+
+#custom-notifications:hover {
+  background-color: @overlay;
 }
 
 .modules-right {
