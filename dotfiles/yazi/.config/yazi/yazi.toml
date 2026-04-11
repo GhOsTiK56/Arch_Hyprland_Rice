@@ -11,7 +11,7 @@ sort_dir_first = true
 sort_translit  = false
 linemode       = "none"
 show_hidden    = false
-show_symlink   = true
+show_symlink   = false
 scrolloff      = 5
 mouse_events   = [ "click", "scroll" ]
 title_format   = "Yazi: {cwd}"
@@ -29,12 +29,16 @@ ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
 
 [opener]
+docx = [
+	{ run = "onlyoffice-desktopeditors %s1", desc = "OnlyOffice", for = "linux", orphan = true }
+]
 edit = [
 	{ run = "${EDITOR:-vi} %s", desc = "$EDITOR",      for = "unix", block = true },
 	{ run = "code %s",          desc = "code",         for = "windows", orphan = true },
 	{ run = "code -w %s",       desc = "code (block)", for = "windows", block = true },
 ]
 play = [
+  { run = "haruna %s1", desc = "Haruna", for = "linux", orphan = true },
 	{ run = "xdg-open %s1",    desc = "Play", for = "linux", orphan = true },
 	{ run = "open %s",         desc = "Play", for = "macos" },
 	{ run = 'start "" %s1',    desc = "Play", for = "windows", orphan = true },
@@ -65,6 +69,7 @@ download = [
 
 [open]
 rules = [
+  { name = "*.docx", use = [ "docx" ] },
 	# Folder
 	{ url = "*/", use = [ "edit", "open", "reveal" ] },
 	# Text
