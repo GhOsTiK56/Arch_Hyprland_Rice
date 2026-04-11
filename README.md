@@ -1,12 +1,63 @@
 # Programs
 
 ```bash
+# Метка для диска
 sudo mkfs.ext4 -L Hard /dev/sdb
 
 # fish & fastfetch
 sudo pacman -S fish fastfetch imagemagick pkgfile ttf-dejavu powerline-fonts inetutils
 	chsh
 	/bin/fish
+
+# Терминальный проводник
+sudo pacman -S yazi unarchiver
+	# Плагины ставятся через менджер ya pack
+	ya pkg add yazi-rs/plugins:git
+		# Настройка плагина
+		# ~/.config/yazi/init.lua
+		require("git"):setup {
+		-- Order of status signs showing in the linemode
+		order = 1500,
+		}
+		
+		# Подключение fetchers (обязательно)
+		# ~/.config/yazi/yazi.toml
+		[[plugin.prepend_fetchers]]
+		id  = "git"
+		url = "*"
+		run = "git"
+		
+		[[plugin.prepend_fetchers]]
+		id  = "git"
+		url = "*/"
+		run = "git"
+	
+	ya pkg add yazi-rs/plugins:full-border
+		# Настройка плагина
+		# ~/.config/yazi/init.lua
+		require("full-border"):setup {
+		-- Available values: ui.Border.PLAIN, ui.Border.ROUNDED
+		type = ui.Border.ROUNDED,
+	
+	# Не работает этот плагин
+	ya pkg add yazi-rs/plugins:zoom
+		# Настройка плагина
+		# ~/.config/yazi/init.lua
+		
+		
+		# ~/.config/yazi/yazi.toml
+		[[mgr.prepend_keymap]]
+		on   = "+"
+		run  = "plugin zoom 1"
+		desc = "Zoom in hovered file"
+		
+		[[mgr.prepend_keymap]]
+		on   = "-"
+		run  = "plugin zoom -1"
+		desc = "Zoom out hovered file"
+		}
+
+
 
 
 # Дефолтные программы
@@ -23,7 +74,9 @@ yay -S proton-vpn-gtk-app portproton
 # ncdu — анализ диска
 # radeontop — загрузка GPU
 # rocm-smi-lib — мониторинг AMD GPU
-sudo pacman -S  expac ncdu radeontop rocm-smi-lib
+# ntfs-3g — форматирование в NTFS
+# ark - просмотрщик архивов
+sudo pacman -S  expac ncdu radeontop rocm-smi-lib ntfs-3g ark
 
 # CLI-утилиты для удобной работы / замены стандартных инструментов:
 # lsd — улучшенный ls
@@ -121,6 +174,21 @@ sudo pacman -S qt6-declarative qt6-svg qt6-quickcontrols2
 	sudo ./install.sh
 ```
 
+
+# Скрытие программ из rofi
+```bash
+# Сначала найди нужный .desktop-файл
+# .desktop лежит в /usr/share/applications/, сначала скопируй его в свою пользовательскую папку командой ниже так ты создашь переопределение, которое rofi будет читать в первую очередь, а оригинал останется нетронутым.
+cp /usr/share/applications/имя.desktop ~/.local/share/applications/ 
+# Теперь открой этот файл в любом редакторе
+nvim ~/.local/share/applications/имя_файла.desktop
+# Найди в самом начале секцию [Desktop Entry] и добавь туда новую строку:
+NoDisplay=true
+# Сохрани файл и сразу обнови базу desktop-файлов командой
+update-desktop-database ~/.local/share/applications
+rm -rf ~/.cache/rofi*
+```
+
 # Установка:
 
 ```bash
@@ -177,93 +245,3 @@ sudo pacman -S nwg-look
 sudo pacman -S papirus-icon-theme
 Theme: скачиваем с gnome-look, распаковываем и переносим в директорию: /usr/share/themes, либо через github
 ```
-
-
-# RCLONE
-
-
-```
-rice/
-└── dotfiles/
-    ├── fastfetch/             →  .config/fastfetch
-    ├── fish/                  →  .config/fish
-    ├── kitty/                 →  .config/kitty
-    ├── nvim/                  →  .config/nvim
-    ├── rclone/                →  .config/rclone
-    ├── BetterDiscord/         →  .config/BetterDiscord
-    ├── systemd/               →  .config/systemd
-    └── rofi/                  →  .config/rofi
-```
-
-**Аккуратно надо быть с systemd и rclone, там нужно будет заново вызвать systemctl --user list-timers --user и раскидать на таймер и прочее**
-# Основные команды
-Перед первым использованием stow нужно создать правильную структуру пакетов и переместить существующие конфиги из домашней директории в dotfiles. Делается это один раз.
-
-```bash
-# 1. Переходим в директорию dotfiles
-cd ~/Arch_Hyprland_Dotfiles/dotfiles
-
-# 2. Создаём структуру для каждого пакета
-mkdir -p \ 
-		 hypr/.config/hypr \
-         kitty/.config/kitty \
-         btop/.config/btop \
-         dunst/.config/dunst \
-         fastfetch/.config/fastfetch \
-         fish/.config/fish \
-         Kvantum/.config/Kvantum \
-         nvim/.config/nvim \
-         nwg-look/.config/nwg-look \
-         OpenRGB/.config/OpenRGB \
-         qt6ct/.config/qt6ct \
-         rclone/.config/rclone \
-         rofi/.config/rofi \
-         systemd/.config/systemd \
-         waybar/.config/waybar
-
-# 3. Перемещаем существующие конфиги из ~/.config в пакеты
-mv ~/.config/kitty/*    kitty/.config/kitty
-
-for dir in hypr kitty btop dunst fastfetch fish Kvantum nvim nwg-look OpenRGB qt6ct rclone rofi systemd waybar
-        set files ~/.config/$dir/* ~/.config/$dir/.*
-        if test -e ~/.config/$dir
-            mv $files $dir/.config/$dir 2>/dev/null
-        end
-    end
-
-# 4. Удаляем остатки старых папок в домашней директории (на всякий случай)
-for dir in hypr kitty btop dunst fastfetch fish Kvantum nvim nwg-look OpenRGB qt6ct rclone rofi systemd waybar
-    rm -rf ~/.config/$dir
-end
-
-# Установить один пакет (создаёт симлинки)
-stow hypr kitty btop dunst fastfetch fish Kvantum nvim nwg-look OpenRGB qt6ct rclone rofi systemd waybar -t ~
-# Удалить симлинки одного пакета
-stow -D kitty -t ~
-
-# Безопасное обновление после git pull
-stow -R */ -t ~
-```
-
-# Быстрый откат (если что-то сломалось)
-
-```bash
-# Для конкретного пакета
-rm -rf ~/.config/kitty
-stow -D kitty -t ~
-stow kitty -t ~
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
