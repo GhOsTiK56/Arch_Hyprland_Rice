@@ -3,7 +3,7 @@
     "logo": {
     	"source": "/home/ghostik/.config/fastfetch/images/cat.png",
     	"type": "auto",
-      	"height": 20,
+      	"height": 18,
       	"padding": {
       	"top": 3
       	}
@@ -100,13 +100,8 @@
         },
         {
             "type": "monitor",
-            "key": " ├  ",
+            "key": " └  ",
             "keyColor": "33"
-        },
-        {
-            "type": "localip",
-            "key": " └ IP",
-              "keyColor": "33"
         },
         "break"
     ]
