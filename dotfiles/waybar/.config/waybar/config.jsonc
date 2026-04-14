@@ -73,6 +73,7 @@
     "interval": 1
   },
   "tray": {
+    "reverse-direction": true,
     "spacing": 10
   },
   "custom/notifications": {
